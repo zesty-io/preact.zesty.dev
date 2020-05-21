@@ -1,0 +1,47 @@
+<link href="/-/custom/exchange-widget.min.css" rel="stylesheet">
+<script src="/-/custom/exchange-widget.min.js" type="text/javascript"></script>
+
+
+<section id="page">
+    <div>
+        <header class="heading-image">
+            {{if {page.image} }}
+                <img src="{{ page.image.getImage(150, 150, fit) }}" align="left" alt="{{ page.title }} Image" itemprop="image primaryImageOfPage" />
+            {{end-if}}
+            
+            (** Simple output of the page title **)
+            <h1 itemprop="name headline">{{ page.title }}</h1>
+        </header>
+
+        <main class="page-content" itemprop="mainContentOfPage">
+            (** below outputs the content which is inputed in the Zesty Content tab **)
+            {{ page.content }}
+        </main>
+    </div>
+
+    <footer id="widget">
+        <script>
+            let element = document.getElementById('widget')
+
+        exchangeWidget({
+            element: element,
+            onDestroy: () =>
+            (element.innerHTML =
+                '<p style="text-align: center">Widget destroyed. <a href>Reload</a></p>'),
+            pockets: [
+            { currency: 'GBP', sum: 100 },
+            { currency: 'EUR', sum: 200 },
+            { currency: 'USD', sum: 300 },
+            ],
+            ratesURL: [
+            '0b315b5b2b8643d6a2ddfa3644e58826',
+            'e0c2f3b5ba0a4cf7a0d561a763b6b351',
+            ]
+            .map(
+                id => `https://openexchangerates.org/api/latest.json?app_id=${id}`
+            )
+            .concat('../mocks/rates.json'),
+        });
+        </script>
+    </footer>
+</section>
